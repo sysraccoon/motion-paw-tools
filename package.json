@@ -1,15 +1,48 @@
 {
   "name": "motion-paw-tools",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "sysraccoon <sysraccoon@gmail.com>",
+  "license": "MIT",
+
+  "scripts": {
+    "build": "unbuild",
+    "watch": "git ls-files | entr npm run build"
+  },
+
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
+  },
+
+  "moduleResolution": "nodenext",
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/*",
+        "./dist/index.d.ts"
+      ]
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@codemirror/language": "^6.10.2",
+    "@lezer/highlight": "^1.2.0",
+    "@motion-canvas/2d": "^3.16.0",
+    "@motion-canvas/core": "^3.16.0",
+    "@motion-canvas/ffmpeg": "^1.1.0"
+  },
   "devDependencies": {
-    "typescript": "^5.5.3"
+    "typescript": "^5.5.3",
+    "unbuild": "^2.0.0"
   }
 }
