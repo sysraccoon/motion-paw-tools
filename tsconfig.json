@@ -1,8 +1,20 @@
 {
   "extends": "@motion-canvas/2d/tsconfig.project.json",
-  "include": ["src/**/*"],
+  "include": ["src"],
+  "exclude": ["node_modules", "lib"],
   "compilerOptions": {
     "baseUrl": "src",
-    "target": "ES2022"
+    "outDir": "./lib",
+    "strict": true,
+    "declaration": true,
+    "sourceMap": true,
+    "noImplicitAny": true,
+    "module": "esnext",
+    "target": "es2022",
+    "allowJs": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true
   }
 }
