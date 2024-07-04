@@ -10,6 +10,8 @@ export function codeSnippetTemplate(): CodeSnippetProps {
     codeText: "",
     padding: 50,
     radius: 15,
+    fill: defaultPalette[0x1],
+    clip: true,
     highlighter: Code.defaultHighlighter || undefined,
   };
 }
