@@ -68,8 +68,8 @@ export function* smoothAddWithAutoscroll(layout: SmartLayout, node: Layout, dura
   const scrollDirections = {
     "column": new Vector2(0, -sizeDiff.y * normalize(layout.offset().y, 1, -1)),
     "column-reverse": new Vector2(0, sizeDiff.y * normalize(layout.offset().y, -1, 1)),
-    "row": new Vector2(-sizeDiff.x * normalize(layout.offset().y, 1, -1), 0),
-    "row-reverse": new Vector2(sizeDiff.x * normalize(layout.offset().y, -1, 1), 0),
+    "row": new Vector2(-sizeDiff.x * normalize(layout.offset().x, 1, -1), 0),
+    "row-reverse": new Vector2(sizeDiff.x * normalize(layout.offset().x, -1, 1), 0),
   };
   const autoScroll = scrollDirections[direction];
 
