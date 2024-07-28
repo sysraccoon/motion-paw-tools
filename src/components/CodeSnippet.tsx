@@ -1,11 +1,12 @@
-import { Code, CodeHighlighter, LezerHighlighter, PossibleCodeScope, Rect, RectProps, signal } from "@motion-canvas/2d";
-import { createRef, easeInOutQuad, SignalValue, SimpleSignal } from "@motion-canvas/core";
+import { CanvasStyleSignal, canvasStyleSignal, Code, CodeHighlighter, LezerHighlighter, PossibleCanvasStyle, PossibleCodeScope, Rect, RectProps, signal } from "@motion-canvas/2d";
+import { createRef, SignalValue, SimpleSignal } from "@motion-canvas/core";
 
 export interface CodeSnippetProps extends RectProps {
   highlighter?: CodeHighlighter;
   fontSize?: SignalValue<number>;
   fontFamily?: SignalValue<string>;
   codeText?: SignalValue<PossibleCodeScope>;
+  codeFill?: SignalValue<PossibleCanvasStyle>;
 }
 
 export class CodeSnippet extends Rect {
@@ -21,6 +22,9 @@ export class CodeSnippet extends Rect {
   @signal()
   public declare readonly codeText: SimpleSignal<PossibleCodeScope, this>;
 
+  @canvasStyleSignal()
+  public declare readonly codeFill: CanvasStyleSignal<this>;
+
   public readonly code = createRef<Code>();
 
   public constructor(props?: CodeSnippetProps) {
@@ -35,6 +39,7 @@ export class CodeSnippet extends Rect {
         fontSize={this.fontSize}
         highlighter={this.highlighter}
         code={this.codeText}
+        fill={this.codeFill}
       />
     );
   };

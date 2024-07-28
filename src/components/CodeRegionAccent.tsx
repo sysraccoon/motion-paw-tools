@@ -4,10 +4,13 @@ import { bboxByCodeRanges, bboxByRegex } from "code-utils";
 
 const defaultTimingFunc: TimingFunction = easeOutCirc;
 
-export interface CodeRegionAccentProps extends RectProps {
-  code: SignalValue<Code>;
+export interface CodeRegionAccentBasicProps extends RectProps {
   accentRegion?: SignalValue<BBox>;
   accentRegionGrow?: SignalValue<PossibleVector2>;
+}
+
+export interface CodeRegionAccentProps extends CodeRegionAccentBasicProps {
+  code: SignalValue<Code>;
 }
 
 export class CodeRegionAccent extends Rect {
