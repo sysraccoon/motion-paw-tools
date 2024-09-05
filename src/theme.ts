@@ -20,6 +20,12 @@ export const defaultPalette = [
   "#f2cdcd", // 0xF flamingo
 ];
 
+export const defaultPaletteNamed = {
+  bg: defaultPalette[0x0],
+  fg: defaultPalette[0x5],
+  text: defaultPalette[0x5],
+};
+
 export function defaultTheme(): HighlightStyle {
   return generateThemeFromBase16(defaultPalette);
 }

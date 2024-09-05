@@ -6,6 +6,7 @@ import { addMark, MarkType } from "custom-meta";
 const defaultDuration = 0.4;
 
 export function* spawnTrimPath(curve: Curve, duration: number = defaultDuration) {
+  curve.opacity(1);
   curve.start(0);
   curve.end(0);
   yield* curve.end(1, duration);
@@ -15,6 +16,7 @@ export function* hideTrimPath(curve: Curve, duration: number = defaultDuration) 
   curve.start(0);
   curve.end(1);
   yield* curve.start(0.9999, duration);
+  curve.opacity(0);
 }
 
 export function* popupSpawn(layout: Layout, duration: number = defaultDuration) {

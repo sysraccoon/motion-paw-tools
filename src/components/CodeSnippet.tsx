@@ -1,5 +1,9 @@
-import { CanvasStyleSignal, canvasStyleSignal, Code, CodeHighlighter, LezerHighlighter, PossibleCanvasStyle, PossibleCodeScope, Rect, RectProps, signal } from "@motion-canvas/2d";
-import { createRef, SignalValue, SimpleSignal } from "@motion-canvas/core";
+import { CanvasStyleSignal, canvasStyleSignal, Code, CodeHighlighter, CodeProps, initial, LezerHighlighter, PossibleCanvasStyle, PossibleCodeScope, Rect, RectProps, signal } from "@motion-canvas/2d";
+import { createRef, Reference, SignalValue, SimpleSignal } from "@motion-canvas/core";
+import { defaultPaletteNamed } from "theme";
+import { AnyCode } from "./AnyCode";
+
+type CodeFactory = (props: CodeProps) => Code;
 
 export interface CodeSnippetProps extends RectProps {
   highlighter?: CodeHighlighter;
@@ -7,6 +11,7 @@ export interface CodeSnippetProps extends RectProps {
   fontFamily?: SignalValue<string>;
   codeText?: SignalValue<PossibleCodeScope>;
   codeFill?: SignalValue<PossibleCanvasStyle>;
+  codeFactory?: CodeFactory;
 }
 
 export class CodeSnippet extends Rect {
@@ -22,6 +27,7 @@ export class CodeSnippet extends Rect {
   @signal()
   public declare readonly codeText: SimpleSignal<PossibleCodeScope, this>;
 
+  @initial(defaultPaletteNamed.text)
   @canvasStyleSignal()
   public declare readonly codeFill: CanvasStyleSignal<this>;
 
@@ -32,16 +38,18 @@ export class CodeSnippet extends Rect {
       ...props,
     });
 
-    this.add(
-      <Code
-        ref={this.code}
-        fontFamily={this.fontFamily}
-        fontSize={this.fontSize}
-        highlighter={this.highlighter}
-        code={this.codeText}
-        fill={this.codeFill}
-      />
-    );
+    const codeFactory = props?.codeFactory ?? ((props) => new Code(props));
+
+    const code = codeFactory({
+      fontFamily: this.fontFamily,
+      fontSize: this.fontSize,
+      highlighter: this.highlighter,
+      code: this.codeText,
+      fill: this.codeFill,
+    });
+
+    this.code(code);
+    this.add(code);
   };
 }
 

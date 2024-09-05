@@ -14,4 +14,3 @@ export function bboxByRegex(code: Code, selector: string | RegExp) {
   const ranges = code.findAllRanges(selector);
   return bboxByCodeRanges(code, ...ranges);
 }
-

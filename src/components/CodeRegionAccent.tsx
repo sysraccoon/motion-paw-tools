@@ -28,7 +28,7 @@ export class CodeRegionAccent extends Rect {
   public constructor(props?: CodeRegionAccentProps) {
     super({
       ...props,
-      position: () => this.accentRegion().center.transformAsPoint(this.code().localToWorld()).sub(this.view().position()),
+      position: () => this.accentRegion().center.transformAsPoint(this.code().localToWorld()).sub(this.view().position()).div(this.view().scale()),
       size: () => this.accentRegion().size.add(this.accentRegionGrow()),
     });
   };
