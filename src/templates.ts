@@ -1,6 +1,6 @@
 import { Code, Gradient } from "@motion-canvas/2d";
 import { CodeRegionAccentBasicProps, CodeSnippetProps } from "components";
-import { defaultPalette } from "./theme";
+import { defaultColorScheme as colors } from "./colorscheme";
 
 export function codeSnippet(): CodeSnippetProps {
   return {
@@ -9,7 +9,7 @@ export function codeSnippet(): CodeSnippetProps {
     codeText: "",
     padding: 50,
     radius: 15,
-    fill: defaultPalette[0x1],
+    fill: colors.background,
     clip: true,
     highlighter: Code.defaultHighlighter || undefined,
   };
@@ -25,8 +25,8 @@ export function codePrimaryRegionAccent(): CodeRegionAccentBasicProps {
       toX: 100,
       angle: 45,
       stops: [
-        { offset: 0, color: defaultPalette[0xA] },
-        { offset: 1, color: defaultPalette[0x9] },
+        { offset: 0, color: colors.red },
+        { offset: 1, color: colors.base16[0x9] },
       ],
     }),
   };
@@ -40,8 +40,8 @@ export function codeSecondaryRegionAccent(): CodeRegionAccentBasicProps {
       toX: 100,
       angle: 45,
       stops: [
-        { offset: 0, color: defaultPalette[0xD] },
-        { offset: 1, color: defaultPalette[0x7] },
+        { offset: 0, color: colors.blue },
+        { offset: 1, color: colors.base16[0x7] },
       ],
     }),
   };

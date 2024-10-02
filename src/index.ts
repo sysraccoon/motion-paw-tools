@@ -1,5 +1,5 @@
 export * from "./animations";
-export * from "./theme";
+export * from "./colorscheme";
 export * from "./templates";
 export * from "./components";
 export * from "./plugins";

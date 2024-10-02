@@ -1,6 +1,6 @@
 import { CanvasStyleSignal, canvasStyleSignal, Code, CodeHighlighter, CodeProps, initial, LezerHighlighter, PossibleCanvasStyle, PossibleCodeScope, Rect, RectProps, signal } from "@motion-canvas/2d";
 import { createRef, Reference, SignalValue, SimpleSignal } from "@motion-canvas/core";
-import { defaultPaletteNamed } from "theme";
+import { defaultColorScheme as colors } from "../colorscheme";
 import { AnyCode } from "./AnyCode";
 
 type CodeFactory = (props: CodeProps) => Code;
@@ -27,7 +27,7 @@ export class CodeSnippet extends Rect {
   @signal()
   public declare readonly codeText: SimpleSignal<PossibleCodeScope, this>;
 
-  @initial(defaultPaletteNamed.text)
+  @initial(colors.foreground)
   @canvasStyleSignal()
   public declare readonly codeFill: CanvasStyleSignal<this>;
 

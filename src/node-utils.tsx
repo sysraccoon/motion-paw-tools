@@ -1,4 +1,4 @@
-import { Layout } from "@motion-canvas/2d";
+import { Node, Layout, NodeState } from "@motion-canvas/2d";
 
 export function reparentAll(nodes: Layout[], newParent: Layout) {
   const preserved = nodes.map((node) => {
@@ -20,4 +20,17 @@ export function reparentAll(nodes: Layout[], newParent: Layout) {
     node.absoluteRotation(preserve.rotation);
     node.absoluteScale(preserve.scale);
   });
+}
+
+export function deepSaveState(node: Node): NodeState {
+    const state: NodeState = {};
+    for (const {key, meta, signal} of node) {
+      if (!meta.cloneable || key in state) continue;
+      state[key] = signal.context.raw();
+    }
+    return state;
+}
+
+export function applyState(node: Node, state: NodeState) {
+  node.applyState(state);
 }

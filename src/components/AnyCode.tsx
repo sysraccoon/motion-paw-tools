@@ -1,7 +1,7 @@
 import { all, createSignal, SimpleSignal, ThreadGenerator } from "@motion-canvas/core";
 import { Code, CodeHighlighter, CodeProps, CodeTag, DefaultHighlightStyle, HighlightResult, nodeName, RawCodeFragment } from "@motion-canvas/2d";
 import { HighlightStyle } from "@codemirror/language";
-import { defaultPalette, defaultPaletteNamed } from "../theme";
+import { defaultColorScheme as colors } from "../colorscheme";
 
 export interface AnyCodeProps extends CodeProps { }
  
@@ -100,7 +100,7 @@ export class ManualHighlighter implements CodeHighlighter<ManualHiCache | null> 
     public prepare(code: string): ManualHiCache | null {
         code = this.cachedCode;
         const tree = new Map<number, string>();
-        let currentColor = defaultPaletteNamed.text;
+        let currentColor = colors.foreground;
         let index = 0;
         let offset = 0;
  
@@ -125,7 +125,7 @@ export class ManualHighlighter implements CodeHighlighter<ManualHiCache | null> 
     }
  
     public highlight(index: number, cache: ManualHiCache | null): HighlightResult {
-        const defaultColor = defaultPaletteNamed.text;
+        const defaultColor = colors.foreground;
         if (!cache) {
             return { color: defaultColor, skipAhead: 0 };
         }
@@ -140,4 +140,4 @@ export class ManualHighlighter implements CodeHighlighter<ManualHiCache | null> 
     }
 }
  
-const codeMap = Object.fromEntries(defaultPalette.map((color, index) => [`<&${index.toString(16).toUpperCase()}`, color]));
+const codeMap = Object.fromEntries(colors.base16.map((color, index) => [`<&${index.toString(16).toUpperCase()}`, color]));
