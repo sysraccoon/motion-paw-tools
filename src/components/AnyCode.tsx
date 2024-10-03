@@ -1,7 +1,7 @@
 import { all, createSignal, SimpleSignal, ThreadGenerator } from "@motion-canvas/core";
 import { Code, CodeHighlighter, CodeProps, CodeTag, DefaultHighlightStyle, HighlightResult, nodeName, RawCodeFragment } from "@motion-canvas/2d";
 import { HighlightStyle } from "@codemirror/language";
-import { defaultColorScheme as colors } from "../colorscheme";
+import { colors } from "../colorscheme";
 
 export interface AnyCodeProps extends CodeProps { }
  

@@ -1,6 +1,6 @@
 import { CanvasStyleSignal, canvasStyleSignal, Code, CodeHighlighter, CodeProps, initial, LezerHighlighter, PossibleCanvasStyle, PossibleCodeScope, Rect, RectProps, signal } from "@motion-canvas/2d";
 import { createRef, Reference, SignalValue, SimpleSignal } from "@motion-canvas/core";
-import { defaultColorScheme as colors } from "../colorscheme";
+import { colors } from "../colorscheme";
 import { AnyCode } from "./AnyCode";
 
 type CodeFactory = (props: CodeProps) => Code;

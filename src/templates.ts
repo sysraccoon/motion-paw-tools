@@ -1,6 +1,6 @@
 import { Code, Gradient } from "@motion-canvas/2d";
 import { CodeRegionAccentBasicProps, CodeSnippetProps } from "components";
-import { defaultColorScheme as colors } from "./colorscheme";
+import { colors } from "./colorscheme";
 
 export function codeSnippet(): CodeSnippetProps {
   return {

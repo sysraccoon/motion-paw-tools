@@ -10,7 +10,6 @@ const config = [
     output: {
       file: 'lib/index.min.js',
       format: 'es',
-      sourcemap: true,
     },
     plugins: [externals(), typescript(), terser()],
     external: [/^@motion-canvas\/core/, /^@motion-canvas\/2d/],
@@ -20,7 +19,6 @@ const config = [
     output: {
       file: 'lib/index.js',
       format: 'es',
-      sourcemap: true,
     },
     plugins: [externals(), typescript()],
     external: [/^@motion-canvas\/core/, /^@motion-canvas\/2d/],
@@ -30,7 +28,6 @@ const config = [
     output: {
       file: 'lib/index.d.ts',
       format: 'es',
-      sourcemap: true,
     },
     plugins: [dts()],
   },

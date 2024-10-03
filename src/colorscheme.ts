@@ -20,7 +20,7 @@ export const catpuccinColorScheme = generateColorSchemeFromBase16([
   "#f2cdcd", // 0xF flamingo
 ]);
 
-export const defaultColorScheme = catpuccinColorScheme;
+export const colors = catpuccinColorScheme;
 
 export type Color = string;
 export function generateColorSchemeFromBase16(scheme: Color[]) {
