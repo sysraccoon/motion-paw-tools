@@ -41,14 +41,14 @@ export class AnyCode extends Code {
     }
  
     public editt(duration: number = 0.6): any {
-        const thisObj = this;
+        const code = this.code;
         return (strings: TemplateStringsArray, ...tags: RawCodeFragment[]) => {
             const { raw, strings: extractedStrings, tags: extractedTags } = this.extract(strings, ...tags);
             this.rawText(raw);
             this.highlighterInstance.printCode();
  
             return (function*() {
-                yield* all(thisObj.code.edit(duration)(extractedStrings, extractedTags));
+                yield* all(code.edit(duration)(extractedStrings, extractedTags));
             }).bind(this)();
         };
     }
@@ -102,7 +102,7 @@ export class ManualHighlighter implements CodeHighlighter<ManualHiCache | null> 
         const tree = new Map<number, string>();
         let currentColor = colors.foreground;
         let index = 0;
-        let offset = 0;
+        const offset = 0;
  
         while (index < code.length) {
             const slice = code.slice(index - 3, index);

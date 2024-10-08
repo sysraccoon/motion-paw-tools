@@ -27,7 +27,6 @@ function PaneComponent() {
         <Group>
           <Button
             title="Export custom metadata for current scene"
-            onClick={exportCustomMetaForCurrentScene}
           >
             Export
           </Button>
@@ -54,10 +53,6 @@ const CustomTabConfig: PluginTabConfig = {
   tabComponent: TabComponent,
   paneComponent: PaneComponent,
 };
-
-function exportCustomMetaForCurrentScene() {
-  const currentScene = useScene();
-}
 
 function clearCustomMetaForCurrentScene() {
   const currentScene = useScene();

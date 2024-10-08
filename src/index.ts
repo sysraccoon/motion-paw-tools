@@ -6,3 +6,5 @@ export * from "./plugins";
 export * from "./custom-meta";
 export * from "./code-utils";
 export * from "./node-utils";
+export * from "./icons";
+export * from "./code-to-scene";
