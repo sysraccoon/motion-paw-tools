@@ -1,13 +1,26 @@
 import { RectProps, IconProps, Rect, signal, initial, Circle, Icon, Layout, Txt, TxtProps, withDefaults, PossibleCanvasStyle } from '@motion-canvas/2d';
 import { SignalValue, PossibleColor, SimpleSignal, ColorSignal, Reference, all, createRef, Vector2, SpacingSignal, chain, unwrap, ThreadGenerator, waitFor, useRandom, arcLerp, easeInOutCubic, Color, easeInOutBack, easeOutBack, easeInBack, DEFAULT } from '@motion-canvas/core';
-import { colors } from '@sysraccoon/motion-paw-tools';
+import { colors } from '../colorscheme';
 import { Key, KeyLabels, KeyProps, labelsAsStringArr } from './Key';
+
+export type FormFactor = (kbd: Keyboard) => Layout;
 
 export interface KeyboardProps extends RectProps {
   wpm?: SignalValue<number>;
   unitSize?: SignalValue<number>;
   extraKeyProps?: KeyProps;
+  formFactor?: FormFactor;
+  kbdLayout?: KeyboardLayout;
 }
+
+export interface KeyboardLayoutItem {
+  labels: KeyLabels;
+  aliases?: string[];
+}
+
+export const NO_KEY = Symbol("NO_KEY");
+
+export type KeyboardLayout = (KeyboardLayoutItem | typeof NO_KEY)[];
 
 export class Keyboard extends Layout {
   @initial(100)
@@ -36,15 +49,27 @@ export class Keyboard extends Layout {
   private keyAliases: any = {};
   private rawKeys: Key[] = [];
 
-  constructor(props?: KeyboardProps) {
-    super({
-      ...props,
-    });
+  constructor(props: KeyboardProps) {
+    super(props);
+
+    if (props.formFactor) {
+      this.setFormFactor(props.formFactor);
+    }
+
+    if (props.kbdLayout) {
+      this.setKeyboardLayout(props.kbdLayout);
+    }
   }
 
-  public alias(keyName: string, keyValue: Key): Key {
+  public createAlias(keyName: string, keyValue: Key): Key {
     this.keyAliases[keyName] = keyValue;
     return keyValue;
+  }
+
+  private createAliases(key: Key, aliases: string[]) {
+    for (const alias of aliases) {
+      this.createAlias(alias, key);
+    }
   }
 
   public removeAllAliasesForKey(key: Key) {
@@ -54,6 +79,14 @@ export class Keyboard extends Layout {
         delete this.keyAliases[alias];
       }
     }
+  }
+
+  public totalKeyCount(): number {
+    return this.rawKeys.length;
+  }
+
+  public keyByIndex(index: number): Key {
+    return this.rawKeys[index];
   }
 
   public keyByName(keyName: string): Key {
@@ -68,42 +101,22 @@ export class Keyboard extends Layout {
     return keyNames.map(name => this.keyByName(name));
   }
 
-  public createKey(labels: KeyLabels, unit: number = 1, aliases?: string[]): Key {
+  public createKey(unit: number = 1): Key {
     const key = <Key
       {...this.extraKeyProps()}
-      labels={labels}
       width={() => this.unitToSize(unit)}
       height={() => this.unitToSize(1)}
     /> as Key;
-
     this.rawKeys.push(key);
-    this.createAliasesForKey(key, labels, aliases);
-
     return key;
   }
 
-  private createAliasesForKey(key: Key, labels: KeyLabels, aliases?: string[]) {
-    if (typeof aliases !== "undefined") {
-      for (const alias of aliases) {
-        this.alias(alias, key);
-      }
-    } else {
-      for (const label of labelsAsStringArr(labels)) {
-        if (typeof label !== "undefined") {
-          this.alias(label, key);
-        }
-      }
-    }
-  }
-
-  public* seqCombo(keyNames: string[], holdDuration: number = 1.5): ThreadGenerator {
+  public* seqCombo(keys: Key[], holdDuration: number = 1.5): ThreadGenerator {
     const holdTasks = [];
     const releaseTasks = [];
 
     let totalDelay = 0;
-    for (let i = 0; i < keyNames.length; i++) {
-      const keyName = keyNames[i];
-      const key: Key = this.keyByName(keyName);
+    for (const key of keys) {
       holdTasks.push(chain(
         waitFor(totalDelay),
         key.press(),
@@ -118,19 +131,17 @@ export class Keyboard extends Layout {
     yield* all(...releaseTasks);
   };
 
-  public* seqTaps(keyNames: string[], onTap?: (keyName: string, key: Key) => ThreadGenerator): ThreadGenerator {
+  public* seqTaps(keys: Key[], onTap?: (key: Key) => ThreadGenerator): ThreadGenerator {
     let totalDelay = 0;
 
     const tapTasks = [];
-    for (let i = 0; i < keyNames.length; i++) {
-      const keyName = keyNames[i];
-      const key: Key = this.keyByName(keyName);
+    for (const key of keys) {
       tapTasks.push(chain(
         waitFor(totalDelay),
         all(
           key.tap(0.6, 0.75, function*() {
             if (onTap) {
-              yield* onTap(keyName, key);
+              yield* onTap(key);
             }
           }()),
         ),
@@ -142,9 +153,8 @@ export class Keyboard extends Layout {
     yield* all(...tapTasks);
   }
 
-  public* highlightRegion(keyNames: string[], backgroundColor: PossibleColor, foregroundColor: PossibleColor, duration: number = 0.6) {
+  public* highlightRegion(keys: Key[], backgroundColor: PossibleColor, foregroundColor: PossibleColor, duration: number = 0.6) {
     const tasks = [];
-    const keys = this.keysByNames(keyNames);
     for (const key of keys) {
       tasks.push(all(
         key.fill(backgroundColor, duration, easeInOutCubic, Color.createLerp("hsv") as any),
@@ -155,56 +165,98 @@ export class Keyboard extends Layout {
     yield* all(...tasks);
   }
 
-  public* changeLayout(labels: (KeyLabels | null)[]) {
-    if (this.rawKeys.length != labels.length) {
-      throw Error(`raw keys and new labels not the same size (rawKeys = ${this.rawKeys.length}, labels = ${labels.length})`);
+  public* changeFormFactor(formFactor: FormFactor, layout?: KeyboardLayout) {
+    yield* this.tileOutTransition(this.absolutePosition());
+
+    this.setFormFactor(formFactor);
+    if (layout) {
+      this.setKeyboardLayout(layout);
+    }
+
+    yield* this.tileInTransition(this.absolutePosition());
+  }
+
+  public setFormFactor(formFactor: FormFactor) {
+    this.keyAliases = {};
+    this.rawKeys = [];
+    this.removeChildren();
+    this.add(formFactor(this));
+  }
+
+  public setKeyboardLayout(layer: KeyboardLayout) {
+    if (this.rawKeys.length != layer.length) {
+      throw Error(`raw keys and new labels not the same size (rawKeys = ${this.rawKeys.length}, labels = ${layer.length})`);
+    }
+
+    const changedKeys = new Map<Key, KeyboardLayoutItem>();
+    for (let i = 0; i < this.rawKeys.length; i++) {
+      const key = this.rawKeys[i];
+      const layerItem = layer[i];
+      if (layerItem !== NO_KEY) {
+        this.removeAllAliasesForKey(key);
+        changedKeys.set(key, layerItem);
+      }
+    }
+
+    for (const [key, layerItem] of changedKeys) {
+      if (layerItem.aliases) {
+        this.createAliases(key, layerItem.aliases);
+      }
+      key.setLabels(layerItem.labels);
+    }
+  }
+
+  public* changeKeyboardLayout(layer: KeyboardLayout) {
+    if (this.rawKeys.length != layer.length) {
+      throw Error(`raw keys and new labels not the same size (rawKeys = ${this.rawKeys.length}, labels = ${layer.length})`);
+    }
+
+    const changedKeys = new Map<Key, KeyboardLayoutItem>();
+    for (let i = 0; i < this.rawKeys.length; i++) {
+      const key = this.rawKeys[i];
+      const layerItem = layer[i];
+      if (layerItem !== NO_KEY) {
+        this.removeAllAliasesForKey(key);
+        changedKeys.set(key, layerItem);
+      }
     }
 
     const tasks = [];
-
-    for (let i = 0; i < this.rawKeys.length; i++) {
-      const key = this.rawKeys[i];
-      const newLabel = labels[i];
-      if (newLabel) {
-        this.removeAllAliasesForKey(key);
+    for (const [key, layerItem] of changedKeys) {
+      if (layerItem.aliases) {
+        this.createAliases(key, layerItem.aliases);
       }
-    }
-
-    for (let i = 0; i < this.rawKeys.length; i++) {
-      const key = this.rawKeys[i];
-      const newLabel = labels[i];
-      if (newLabel) {
-        this.createAliasesForKey(key, newLabel);
-        tasks.push(key.changeLabels(newLabel));
-      }
+      tasks.push(key.changeLabels(layerItem.labels));
     }
 
     yield* all(...tasks);
   }
 
-  public* tileInTransition(basePosition: Vector2, delayDuration: number = 0.4, inDuration: number = 0.6) {
+  public* tileInTransition(basePosition?: Vector2, delayDuration: number = 0.4, inDuration: number = 0.6) {
+    basePosition = basePosition ?? this.absolutePosition();
+
     const distances = this.searchDistancesForKey(basePosition);
     const maxDistance = Math.max(...distances.values());
     const distancePointDuration = delayDuration/maxDistance;
 
     const tasks = [];
     for (const [key, distance] of distances) {
-      const scale = key.scale.context.raw();
-      const opacity = key.opacity.context.raw();
       key.scale(0);
       key.opacity(0);
       tasks.push(chain(
         waitFor(distance*distancePointDuration),
         all(
-          key.scale(scale, inDuration, easeOutBack),
-          key.opacity(opacity ?? DEFAULT, inDuration/4),
+          key.scale(1, inDuration, easeOutBack),
+          key.opacity(1, inDuration/4),
         ),
       ));
     }
     yield* all(...tasks);
   }
 
-  public* tileOutTransition(basePosition: Vector2, delayDuration: number = 0.4, outDuration: number = 0.6) {
+  public* tileOutTransition(basePosition?: Vector2, delayDuration: number = 0.4, outDuration: number = 0.6) {
+    basePosition = basePosition ?? this.absolutePosition();
+
     const distances = this.searchDistancesForKey(basePosition);
     const maxDistance = Math.max(...distances.values());
     const distancePointDuration = delayDuration/maxDistance;
@@ -228,7 +280,7 @@ export class Keyboard extends Layout {
   private searchDistancesForKey(basePosition: Vector2): Map<Key, number> {
     const distances = new Map<Key, number>();
     for (const key of this.rawKeys) {
-      const currentDistance = key.position().sub(basePosition).squaredMagnitude;
+      const currentDistance = key.absolutePosition().sub(basePosition).squaredMagnitude;
       distances.set(key, currentDistance);
     }
     return distances;

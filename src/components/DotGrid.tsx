@@ -1,6 +1,6 @@
 import { ShapeProps, nodeName, Shape, initial, vector2Signal } from "@motion-canvas/2d";
 import { useScene, Vector2, SignalValue, PossibleVector2, Vector2Signal } from "@motion-canvas/core";
-import { colors } from "@sysraccoon/motion-paw-tools";
+import { colors } from "../colorscheme";
 
 export interface DotGridProps extends ShapeProps {
   spacing?: SignalValue<PossibleVector2>;

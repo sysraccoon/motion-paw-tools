@@ -56,5 +56,9 @@
   "lint-staged": {
     "*.{ts,tsx}": "eslint --fix",
     "*.{js,jsx,ts,tsx,md,scss,json,mjs}": "prettier --write"
+  },
+  "dependencies": {
+    "@fig/lezer-bash": "^1.2.5",
+    "@lezer/javascript": "^1.4.19"
   }
 }

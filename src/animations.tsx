@@ -1,7 +1,7 @@
 import { Curve, Layout } from "@motion-canvas/2d";
 import { all, easeOutBack, Vector2, waitFor, easeInBack, createRef, DEFAULT, ThreadGenerator } from "@motion-canvas/core";
-import { addMark, MarkType } from "custom-meta";
-import { applyState, deepSaveState } from "node-utils";
+import { addMark, MarkType } from "./custom-meta";
+import { applyState, deepSaveState } from "./node-utils";
 
 const defaultDuration = 0.4;
 

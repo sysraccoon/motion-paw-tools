@@ -1,6 +1,6 @@
 import { Circle, Icon, initial, Layout, Rect, RectProps, signal, Txt } from "@motion-canvas/2d";
 import { SignalValue, SimpleSignal } from "@motion-canvas/core";
-import { colors } from "@sysraccoon/motion-paw-tools";
+import { colors } from "../colorscheme";
 import { icons } from "icons";
 
 export interface WindowProps extends RectProps {

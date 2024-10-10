@@ -1,6 +1,7 @@
-import { RectProps, IconProps, Rect, signal, initial, Circle, Icon, Layout, Txt, TxtProps, withDefaults, PossibleCanvasStyle } from '@motion-canvas/2d';
-import { SignalValue, PossibleColor, SimpleSignal, ColorSignal, Reference, all, createRef, Vector2, SpacingSignal, chain, unwrap, errorToLog, PossibleVector2, ThreadGenerator } from '@motion-canvas/core';
-import { colors, fadeInTransition, fadeOutTransition } from '@sysraccoon/motion-paw-tools';
+import { RectProps, Rect, signal, initial, Circle, Layout, Txt, TxtProps } from '@motion-canvas/2d';
+import { SignalValue, PossibleColor, ColorSignal, Reference, all, createRef, Vector2, PossibleVector2, ThreadGenerator } from '@motion-canvas/core';
+import { colors  } from '../colorscheme';
+import { fadeInTransition, fadeOutTransition } from '../animations';
 
 export interface KeyLabels {
   topLeft?: string,
@@ -81,6 +82,17 @@ export class Key extends Rect {
     );
     accentCircle.remove().dispose();
   }
+  
+  public setLabels(labels: KeyLabels) {
+    this.txtLabels.forEach((value) => {
+      value.remove().dispose();
+    });
+    this.txtLabels = this.createLabels(labels);
+
+    for (const txtLabel of this.txtLabels) {
+      this.labelHolder().add(txtLabel);
+    }
+  }
 
   public* changeLabels(labels: KeyLabels, duration: number = 0.8) {
     const fadeOutTasks = [];
@@ -128,7 +140,11 @@ export class Key extends Rect {
     }
 
     const foregroundColor = this.foregroundColor;
-    const addLabelIfDef = function(text: string | undefined, position: Vector2, offset: PossibleVector2) {
+    const addLabelIfDef = function(
+      text: string | undefined,
+      position: SignalValue<PossibleVector2>,
+      offset: SignalValue<PossibleVector2>
+    ) {
       if (typeof text !== "undefined") {
         txtLabels.push(
           <Txt
@@ -145,17 +161,17 @@ export class Key extends Rect {
       }
     };
 
-    addLabelIfDef(labels?.topLeft, cardinalToLocal(this.topLeft()), [-1, -1]);
-    addLabelIfDef(labels?.top, cardinalToLocal(this.top()), [0, -1]);
-    addLabelIfDef(labels?.topRight, cardinalToLocal(this.topRight()), [1, -1]);
+    addLabelIfDef(labels?.topLeft, () => cardinalToLocal(this.topLeft()), [-1, -1]);
+    addLabelIfDef(labels?.top, () => cardinalToLocal(this.top()), [0, -1]);
+    addLabelIfDef(labels?.topRight, () => cardinalToLocal(this.topRight()), [1, -1]);
 
-    addLabelIfDef(labels?.left, cardinalToLocal(this.left()), [-1, 0]);
-    addLabelIfDef(labels?.middle, cardinalToLocal(this.middle()), [0, 0]);
-    addLabelIfDef(labels?.right, cardinalToLocal(this.right()), [1, 0]);
+    addLabelIfDef(labels?.left, () => cardinalToLocal(this.left()), [-1, 0]);
+    addLabelIfDef(labels?.middle, () => cardinalToLocal(this.middle()), [0, 0]);
+    addLabelIfDef(labels?.right, () => cardinalToLocal(this.right()), [1, 0]);
 
-    addLabelIfDef(labels?.bottomLeft, cardinalToLocal(this.bottomLeft()), [-1, 1]);
-    addLabelIfDef(labels?.bottom, cardinalToLocal(this.bottom()), [0, 1]);
-    addLabelIfDef(labels?.bottomRight, cardinalToLocal(this.bottomRight()), [1, 1]);
+    addLabelIfDef(labels?.bottomLeft, () => cardinalToLocal(this.bottomLeft()), [-1, 1]);
+    addLabelIfDef(labels?.bottom, () => cardinalToLocal(this.bottom()), [0, 1]);
+    addLabelIfDef(labels?.bottomRight, () => cardinalToLocal(this.bottomRight()), [1, 1]);
 
     return txtLabels;
   }

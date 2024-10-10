@@ -34,18 +34,18 @@ export class CodeRegionAccent extends Rect {
   };
 
   public setRegionByRegex(selector: string | RegExp) {
-    this.accentRegion(bboxByRegex(this.code(), selector));
+    this.accentRegion(() => bboxByRegex(this.code(), selector));
   }
 
   public *changeRegionByRegex(selector: string | RegExp, duration: number, timingFunc: TimingFunction = defaultTimingFunc) {
-    yield* this.accentRegion(bboxByRegex(this.code(), selector), duration, timingFunc);
+    yield* this.accentRegion(() => bboxByRegex(this.code(), selector), duration, timingFunc);
   }
 
   public setRegionByCodeRanges(ranges: CodeRange[]) {
-    this.accentRegion(bboxByCodeRanges(this.code(), ...ranges));
+    this.accentRegion(() => bboxByCodeRanges(this.code(), ...ranges));
   }
 
   public *changeRegionByCodeRanges(ranges: CodeRange[], duration: number, timingFunc: TimingFunction = defaultTimingFunc) {
-    yield* this.accentRegion(bboxByCodeRanges(this.code(), ...ranges), duration, timingFunc);
+    yield* this.accentRegion(() => bboxByCodeRanges(this.code(), ...ranges), duration, timingFunc);
   }
 }

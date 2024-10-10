@@ -8,3 +8,5 @@ export * from "./code-utils";
 export * from "./node-utils";
 export * from "./icons";
 export * from "./code-to-scene";
+export * from "./highlighters";
+export * from "./keyboard-presets/index";

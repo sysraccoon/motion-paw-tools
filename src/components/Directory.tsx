@@ -1,6 +1,7 @@
 import { initial, Layout, LayoutProps, signal } from '@motion-canvas/2d';
 import { all, chain, createRef, createSignal, DEFAULT, easeInCubic, Reference, SignalValue, SimpleSignal, ThreadGenerator, Vector2, waitFor } from '@motion-canvas/core';
-import { colors, smoothInsert } from '@sysraccoon/motion-paw-tools';
+import { colors } from '../colorscheme';
+import { smoothInsert } from '../animations';
 import { icons } from '../icons';
 import { File } from './File';
 
