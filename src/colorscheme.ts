@@ -71,7 +71,7 @@ function generateCodeStyleFromBase16(scheme: Color[]): HighlightStyle {
         color: scheme[0x7],
       },
       {
-        tag: [tags.variableName],
+        tag: [tags.variableName, tags.special(tags.variableName)],
         color: scheme[0x8]
       },
       {
@@ -82,7 +82,7 @@ function generateCodeStyleFromBase16(scheme: Color[]): HighlightStyle {
       {
         tag: [
           tags.atom, tags.bool, tags.constant(tags.variableName),
-          tags.special(tags.variableName), tags.number
+          tags.number, tags.literal,
         ],
         color: scheme[0x9],
       },

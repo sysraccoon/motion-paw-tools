@@ -1,5 +1,5 @@
 import { RectProps, Rect, signal, initial, Circle, Layout, Txt, TxtProps } from '@motion-canvas/2d';
-import { SignalValue, PossibleColor, ColorSignal, Reference, all, createRef, Vector2, PossibleVector2, ThreadGenerator } from '@motion-canvas/core';
+import { SignalValue, PossibleColor, ColorSignal, Reference, all, createRef, Vector2, PossibleVector2, ThreadGenerator, waitFor } from '@motion-canvas/core';
 import { colors  } from '../colorscheme';
 import { fadeInTransition, fadeOutTransition } from '../animations';
 
@@ -99,6 +99,9 @@ export class Key extends Rect {
     for (const txtLabel of this.txtLabels) {
       fadeOutTasks.push(fadeOutTransition(txtLabel, duration*0.5));
     }
+
+    // preserve overall duration if txtLabels is empty
+    fadeOutTasks.push(waitFor(duration*0.5));
 
     yield* all(...fadeOutTasks);
 
