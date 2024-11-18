@@ -16,11 +16,13 @@ export class Window extends Rect {
   @signal()
   public declare readonly icon: SimpleSignal<string, this>;
 
+  @signal()
+  public declare readonly topBar: SimpleSignal<Layout, this>;
+
   public constructor(props: WindowProps) {
     super({
       fill: colors.backgroundAlt,
       padding: 48,
-      gap: 32,
       radius: 20,
       ...props,
       layout: true,
@@ -30,8 +32,10 @@ export class Window extends Rect {
     this.add(
       <>
         <Layout
+          ref={this.topBar}
           gap={16}
           alignItems={"center"}
+          marginBottom={32}
         >
           <Icon
             icon={this.icon}

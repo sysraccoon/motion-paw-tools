@@ -1,5 +1,5 @@
 import { Curve, Layout } from "@motion-canvas/2d";
-import { all, easeOutBack, Vector2, waitFor, easeInBack, createRef, DEFAULT, ThreadGenerator } from "@motion-canvas/core";
+import { all, easeOutBack, Vector2, waitFor, easeInBack, createRef, DEFAULT, ThreadGenerator, useDuration } from "@motion-canvas/core";
 import { addMark, MarkType } from "./custom-meta";
 import { applyState, deepSaveState } from "./node-utils";
 
@@ -65,7 +65,10 @@ export function* rotateSpawn(layout: Layout, duration: number = defaultDuration)
   applyState(layout, state);
 }
 
-export function* nop(duration: number = defaultDuration) {
+export function* nop(durationOrEventName: number | string = defaultDuration) {
+  const duration = typeof durationOrEventName == "number" ?
+    durationOrEventName : useDuration(durationOrEventName);
+
   addMark(MarkType.NopStart);
   yield* waitFor(duration);
   addMark(MarkType.NopEnd);

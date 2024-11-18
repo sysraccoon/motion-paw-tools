@@ -3,6 +3,7 @@ export const icons = {
   closeDirectory: "ph:folder-notch",
 
   window: "tabler:layout-grid-filled",
+  browser: "noto:raccoon",
 
   file: "ph:file",
   ts: "ph:file-ts",
