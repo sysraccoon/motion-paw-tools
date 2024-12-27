@@ -1,4 +1,4 @@
-import { RectProps, IconProps, Rect, signal, initial, Circle, Icon, Layout, Txt } from '@motion-canvas/2d';
+import { Node, RectProps, IconProps, Rect, signal, initial, Circle, Icon, Layout, Txt } from '@motion-canvas/2d';
 import { SignalValue, PossibleColor, SimpleSignal, ColorSignal, Reference, all, createRef, Vector2, Color, easeInOutCubic } from '@motion-canvas/core';
 import { colors } from '../colorscheme';
 import { icons } from '../icons';
@@ -36,7 +36,7 @@ export class File extends Rect {
     });
 
     this.add(
-      <>
+      <Node>
         <Layout
           ref={this.accentNode}
           layout={false} 
@@ -54,7 +54,7 @@ export class File extends Rect {
           fontSize={38}
           fill={this.foregroundColor}
         />
-      </>
+      </Node>
     );
   }
 

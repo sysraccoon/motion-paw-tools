@@ -1,4 +1,4 @@
-import { Layout, Rect, Path, LayoutProps } from "@motion-canvas/2d";
+import { Node, Layout, Rect, Path, LayoutProps } from "@motion-canvas/2d";
 import { colors } from "../colorscheme";
 
 export interface TabHeaderProps extends LayoutProps {}
@@ -15,7 +15,7 @@ export class TabHeader extends Layout {
     });
 
     this.add(
-      <>
+      <Node>
         <Rect
           padding={[15, 30]}
           fill={colors.backgroundAlt}
@@ -27,7 +27,7 @@ export class TabHeader extends Layout {
           data={"M0,25L0,0S0,25,25,25Z"}
           fill={colors.backgroundAlt}
         />
-      </>
+      </Node>
     );
   }
 }

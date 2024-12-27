@@ -1,4 +1,4 @@
-import { RectProps, Rect, signal, initial, Circle, Layout, Txt, TxtProps } from '@motion-canvas/2d';
+import { Node, RectProps, Rect, signal, initial, Circle, Layout, Txt, TxtProps } from '@motion-canvas/2d';
 import { SignalValue, PossibleColor, ColorSignal, Reference, all, createRef, Vector2, PossibleVector2, ThreadGenerator, waitFor } from '@motion-canvas/core';
 import { colors  } from '../colorscheme';
 import { fadeInTransition, fadeOutTransition } from '../animations';
@@ -53,7 +53,7 @@ export class Key extends Rect {
     }
 
     this.add(
-      <>
+      <Node>
         <Layout
           ref={this.accentNode}
           layout={false} 
@@ -65,7 +65,7 @@ export class Key extends Rect {
         >
           {...this.txtLabels}
         </Layout>
-      </>
+      </Node>
     );
   }
 

@@ -30,33 +30,33 @@ export class Window extends Rect {
     });
 
     this.add(
-      <>
-        <Layout
-          ref={this.topBar}
-          gap={16}
-          alignItems={"center"}
-          marginBottom={32}
-        >
-          <Icon
-            icon={this.icon}
-            size={42}
-            color={colors.foreground}
-          />
-          <Txt
-            text={this.title}
-            fill={colors.foreground}
-            fontSize={48}
-            fontFamily={"Source Code Pro"}
-          />
-          <Layout grow={1} />
-          <Circle size={42} fill={colors.green} />
-          <Circle size={42} fill={colors.yellow} />
-          <Circle size={42} fill={colors.red} />
-        </Layout>
-        <Layout grow={1}>
-          {props.children}
-        </Layout>
-      </>
+      <Layout
+        ref={this.topBar}
+        gap={16}
+        alignItems={"center"}
+        marginBottom={32}
+      >
+        <Icon
+          icon={this.icon}
+          size={42}
+          color={colors.foreground}
+        />
+        <Txt
+          text={this.title}
+          fill={colors.foreground}
+          fontSize={48}
+          fontFamily={"Source Code Pro"}
+        />
+        <Layout grow={1} />
+        <Circle size={42} fill={colors.green} />
+        <Circle size={42} fill={colors.yellow} />
+        <Circle size={42} fill={colors.red} />
+      </Layout>
+    );
+    this.add(
+      <Layout grow={1}>
+        {props.children}
+      </Layout>
     );
   }
 }

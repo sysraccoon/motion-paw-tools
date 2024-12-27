@@ -1,4 +1,4 @@
-import { Code, Icon, Layout, Rect, RectProps, signal, Txt } from "@motion-canvas/2d";
+import { Node, Code, Icon, Layout, Rect, RectProps, signal, Txt } from "@motion-canvas/2d";
 import { DEFAULT, SignalValue, SimpleSignal } from "@motion-canvas/core";
 import { rotateSpawn } from "../animations";
 import { colors } from "../colorscheme";
@@ -31,7 +31,7 @@ export class IconTxt extends Rect {
     })
 
     this.add(
-      <>
+      <Node>
         <Icon
           icon={this.icon} 
           size={60}
@@ -50,7 +50,7 @@ export class IconTxt extends Rect {
             fill={colors.foreground}
           />
         </Layout>
-      </>
+      </Node>
     );
   }
 

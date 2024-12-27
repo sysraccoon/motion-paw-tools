@@ -2,7 +2,7 @@ import { Circle, Icon, initial, Layout, Rect, RectProps, signal, Txt } from "@mo
 import { all, createRef, DEFAULT, easeOutBack, PossibleVector2, SignalValue, SimpleSignal, Vector2, waitFor } from "@motion-canvas/core";
 import { colors } from "../colorscheme";
 import { icons } from "icons";
-import { Scrollable } from "@hhenrichsen/canvas-commons";
+import { Scrollable } from "./Scrollable";
 
 export interface BrowserProps extends RectProps {
   title?: SignalValue<string>;
@@ -42,62 +42,67 @@ export class Browser extends Rect {
     });
 
     this.add(
-      <>
-        <Layout
-          ref={this.topBar}
-          gap={16}
-          alignItems={"center"}
-          marginBottom={32}
-        >
-          <Icon
-            icon={this.icon}
-            size={42}
-            color={colors.foreground}
-          />
-          <Txt
-            text={this.title}
-            fill={colors.foreground}
-            fontSize={48}
-            fontFamily={"Source Code Pro"}
-          />
-          <Layout grow={1} />
-          <Circle size={42} fill={colors.green} />
-          <Circle size={42} fill={colors.yellow} />
-          <Circle size={42} fill={colors.red} />
-        </Layout>
+      <Layout
+        ref={this.topBar}
+        gap={16}
+        alignItems={"center"}
+        marginBottom={32}
+      >
+        <Icon
+          icon={this.icon}
+          size={42}
+          color={colors.foreground}
+        />
+        <Txt
+          text={this.title}
+          fill={colors.foreground}
+          fontSize={48}
+          fontFamily={"Source Code Pro"}
+        />
+        <Layout grow={1} />
+        <Circle size={42} fill={colors.green} />
+        <Circle size={42} fill={colors.yellow} />
+        <Circle size={42} fill={colors.red} />
+      </Layout>
+    );
 
-        <Layout ref={this.urlSection}>
-          <Layout
-            ref={this.urlBar}
-            layout
-            direction={"row"}
-            alignItems={"center"}
-            alignSelf={"center"}
-            padding={30}
-          >
-            <Txt
-              ref={this.urlTxt}
-              text={""}
-              fontSize={50}
-              fontFamily={"Source Code Pro"}
-              fill={colors.foreground}
-            />
-            <Icon
-              ref={this.urlIcon}
-              icon={"material-symbols:search"}
-              color={colors.foreground}
-              size={65}
-            />
-          </Layout>
-        </Layout>
-        <Scrollable
-          ref={this.viewport}
-          height={0}
-          radius={10}
+    this.add(
+      <Layout ref={this.urlSection}>
+        <Layout
+          ref={this.urlBar}
+          layout
+          direction={"row"}
+          alignItems={"center"}
+          alignSelf={"center"}
+          padding={30}
         >
+          <Txt
+            ref={this.urlTxt}
+            text={""}
+            fontSize={50}
+            fontFamily={"Source Code Pro"}
+            fill={colors.foreground}
+          />
+          <Icon
+            ref={this.urlIcon}
+            icon={"material-symbols:search"}
+            color={colors.foreground}
+            size={65}
+          />
+        </Layout>
+      </Layout>
+    );
+    this.add(
+      <Rect
+        ref={this.viewport}
+        size={[0, 0]}
+        radius={20}
+        clip
+      >
+        <Layout layout={false}>
           {props.children}
-        </Scrollable>
-      </>
+        </Layout>
+      </Rect>
     );
 
     const topBar = this.topBar();

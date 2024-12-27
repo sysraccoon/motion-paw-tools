@@ -9,4 +9,6 @@ export * from "./Browser";
 export * from "./IconTxt";
 export * from "./Directory";
 export * from "./File";
+export * from "./Scrollable";
+export * from "./Editor";
 

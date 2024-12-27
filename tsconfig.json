@@ -3,6 +3,8 @@
   "include": ["src"],
   "exclude": ["node_modules", "lib"],
   "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "@motion-canvas/2d/lib",
     "baseUrl": "src",
     "outDir": "./lib",
     "strict": true,
