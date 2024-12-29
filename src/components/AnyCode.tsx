@@ -117,7 +117,7 @@ export class ManualHighlighter implements CodeHighlighter<ManualHiCache | null> 
                 }
             }
  
-            tree.set(index + offset, currentColor);
+            tree.set(index + offset, currentColor.hex());
             index++;
         }
  
@@ -125,7 +125,7 @@ export class ManualHighlighter implements CodeHighlighter<ManualHiCache | null> 
     }
  
     public highlight(index: number, cache: ManualHiCache | null): HighlightResult {
-        const defaultColor = colors.foreground;
+        const defaultColor = colors.foreground.hex();
         if (!cache) {
             return { color: defaultColor, skipAhead: 0 };
         }

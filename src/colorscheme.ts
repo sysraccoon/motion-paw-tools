@@ -1,5 +1,6 @@
 import { HighlightStyle } from '@codemirror/language';
 import { tags } from '@lezer/highlight';
+import { Color, PossibleColor } from '@motion-canvas/core';
 
 export const catpuccinColorScheme = generateColorSchemeFromBase16([
   "#1e1e2e", // 0x0 base
@@ -22,27 +23,27 @@ export const catpuccinColorScheme = generateColorSchemeFromBase16([
 
 export const colors = catpuccinColorScheme;
 
-export type Color = string;
-export function generateColorSchemeFromBase16(scheme: Color[]) {
+export function generateColorSchemeFromBase16(scheme: PossibleColor[]) {
   if (scheme.length !== 16) {
     throw Error("base16 scheme must contain exactly 16 values");
   }
+  const normalizedScheme = scheme.map((clr) => new Color(clr));
 
   return {
-    base16: scheme,
-    codeStyle: generateCodeStyleFromBase16(scheme),
+    base16: normalizedScheme,
+    codeStyle: generateCodeStyleFromBase16(normalizedScheme),
 
-    background: scheme[0x0],
-    backgroundAlt: scheme[0x1],
-    foreground: scheme[0x5],
-    foregroundAlt: scheme[0x4],
+    background: normalizedScheme[0x0],
+    backgroundAlt: normalizedScheme[0x1],
+    foreground: normalizedScheme[0x5],
+    foregroundAlt: normalizedScheme[0x4],
 
-    red: scheme[0x8],
-    green: scheme[0xB],
-    yellow: scheme[0xA],
-    blue: scheme[0xD],
-    magenta: scheme[0xE],
-    cyan: scheme[0xC],
+    red: normalizedScheme[0x8],
+    green: normalizedScheme[0xB],
+    yellow: normalizedScheme[0xA],
+    blue: normalizedScheme[0xD],
+    magenta: normalizedScheme[0xE],
+    cyan: normalizedScheme[0xC],
   };
 }
 
@@ -51,12 +52,12 @@ function generateCodeStyleFromBase16(scheme: Color[]): HighlightStyle {
     [
       {
         tag: [tags.comment],
-        color: scheme[0x3],
+        color: scheme[0x3].hex(),
         fontStyle: "italic",
       },
       {
         tag: [tags.invalid],
-        color: scheme[0x4],
+        color: scheme[0x4].hex(),
         borderBottom: `1px dotted ${scheme[0x8]}`,
       },
       {
@@ -64,62 +65,62 @@ function generateCodeStyleFromBase16(scheme: Color[]): HighlightStyle {
           tags.paren, tags.brace, tags.bracket,
           tags.punctuation, tags.name,
         ],
-        color: scheme[0x5],
+        color: scheme[0x5].hex(),
       },
       {
         tag: [tags.operator, tags.operatorKeyword],
-        color: scheme[0x7],
+        color: scheme[0x7].hex(),
       },
       {
         tag: [tags.variableName, tags.special(tags.variableName)],
-        color: scheme[0x8]
+        color: scheme[0x8].hex()
       },
       {
         // string interpolation braces
         tag: [tags.special(tags.brace)],
-        color: scheme[0x8],
+        color: scheme[0x8].hex(),
       },
       {
         tag: [
           tags.atom, tags.bool, tags.constant(tags.variableName),
           tags.number, tags.literal,
         ],
-        color: scheme[0x9],
+        color: scheme[0x9].hex(),
       },
       {
         tag: [tags.link],
-        color: scheme[0x9],
+        color: scheme[0x9].hex(),
         textDecoration: "underline",
         textUnderlinePosition: "under",
       },
       {
         tag: [tags.typeName, tags.className],
-        color: scheme[0xA],
+        color: scheme[0xA].hex(),
       },
       {
         tag: [tags.string],
-        color: scheme[0xB],
+        color: scheme[0xB].hex(),
       },
       {
         tag: [tags.regexp, tags.escape],
-        color: scheme[0xC],
+        color: scheme[0xC].hex(),
       },
       {
         tag: [tags.propertyName],
-        color: scheme[0xD],
+        color: scheme[0xD].hex(),
       },
       {
         tag: [tags.heading],
-        color: scheme[0xD],
+        color: scheme[0xD].hex(),
         fontWeight: "bold",
       },
       {
         tag: [tags.keyword],
-        color: scheme[0xE],
+        color: scheme[0xE].hex(),
       },
       {
         tag: [tags.tagName],
-        color: scheme[0xF],
+        color: scheme[0xF].hex(),
       },
     ]
   );
