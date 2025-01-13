@@ -1,4 +1,4 @@
-import { Code, CodeSignal, Layout, LayoutProps, LezerHighlighter, PossibleCodeScope, signal, Txt } from "@motion-canvas/2d";
+import { CanvasStyleSignal, canvasStyleSignal, Code, CodeSignal, initial, Layout, LayoutProps, LezerHighlighter, PossibleCanvasStyle, PossibleCodeScope, signal, Txt } from "@motion-canvas/2d";
 import { TabHeader } from "./TabHeader";
 import { colors } from "../colorscheme";
 import { CodeSnippet, SpikeCornerRect } from "../templates";
@@ -10,6 +10,7 @@ import { allLines } from "../code-utils";
 export interface EditorProps extends LayoutProps {
   viewportProps?: ScrollableProps;
   editorFile?: EditorFile;
+  fill?: SignalValue<PossibleCanvasStyle>;
 }
 
 export interface EditorFile {
@@ -28,6 +29,10 @@ export class Editor extends Layout {
   @signal()
   public declare readonly viewport: SimpleSignal<Scrollable, this>;
 
+  @initial(colors.backgroundAlt)
+  @canvasStyleSignal()
+  public declare readonly fill: CanvasStyleSignal<this>;
+
   constructor(props: EditorProps) {
     super({
       ...props,
@@ -36,7 +41,7 @@ export class Editor extends Layout {
     })
 
     this.add(
-      <TabHeader>
+      <TabHeader fill={this.fill} marginBottom={-1}>
         <Txt
           ref={this.title}
           fill={colors.foreground}
@@ -45,7 +50,7 @@ export class Editor extends Layout {
       </TabHeader>
     );
     this.add(
-      <SpikeCornerRect>
+      <SpikeCornerRect fill={this.fill}>
         <Scrollable
           {...props.viewportProps}
           ref={this.viewport}

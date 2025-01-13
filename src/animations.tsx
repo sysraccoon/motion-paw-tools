@@ -32,7 +32,6 @@ export function* fadeOutTransition(layout: Layout, duration: number = defaultDur
 }
 
 export function* popupSpawn(layout: Layout, duration: number = defaultDuration) {
-  const size = layout.size.context.raw();
   const scale = layout.scale.context.raw();
   layout.scale(0);
   yield* all(
