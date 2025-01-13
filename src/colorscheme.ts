@@ -1,6 +1,7 @@
 import { HighlightStyle } from '@codemirror/language';
 import { tags } from '@lezer/highlight';
-import { Color, PossibleColor } from '@motion-canvas/core';
+import { Gradient } from '@motion-canvas/2d';
+import { Color, PossibleColor, SignalValue } from '@motion-canvas/core';
 
 export const catpuccinColorScheme = generateColorSchemeFromBase16([
   "#1e1e2e", // 0x0 base
@@ -23,6 +24,18 @@ export const catpuccinColorScheme = generateColorSchemeFromBase16([
 
 export const colors = catpuccinColorScheme;
 
+export function linearGradient(from: SignalValue<PossibleColor>, to: SignalValue<PossibleColor>): Gradient {
+  return new Gradient({
+    fromX: 0,
+    toX: 100,
+    angle: 45,
+    stops: [
+      { offset: 0, color: from },
+      { offset: 1, color: to },
+    ],
+  });
+}
+
 export function generateColorSchemeFromBase16(scheme: PossibleColor[]) {
   if (scheme.length !== 16) {
     throw Error("base16 scheme must contain exactly 16 values");
@@ -37,6 +50,8 @@ export function generateColorSchemeFromBase16(scheme: PossibleColor[]) {
     backgroundAlt: normalizedScheme[0x1],
     foreground: normalizedScheme[0x5],
     foregroundAlt: normalizedScheme[0x4],
+    surface: normalizedScheme[0x2],
+    surfaceAlt: normalizedScheme[0x3],
 
     red: normalizedScheme[0x8],
     green: normalizedScheme[0xB],
