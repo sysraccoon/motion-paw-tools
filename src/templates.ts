@@ -1,4 +1,4 @@
-import { Code, Gradient, Rect, withDefaults } from "@motion-canvas/2d";
+import { Code, Gradient, Rect, Txt, withDefaults } from "@motion-canvas/2d";
 import { colors } from "./colorscheme";
 import { CodeRegionAccent } from "./components";
 
@@ -51,3 +51,14 @@ export const CodeSecondaryRegionAccent = withDefaults(CodeRegionAccent, {
     ],
   }),
 } as any);
+
+export const WaterMark = withDefaults(Txt, {
+  text: "t.me/sysraccoon",
+  opacity: 0.05,
+  fontFamily: "Source Code Pro",
+  fontSize: 250,
+  fontWeight: 800,
+  zIndex: Infinity,
+  fill: colors.foregroundAlt,
+  rotation: -20,
+});
