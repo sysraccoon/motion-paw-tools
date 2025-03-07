@@ -11,4 +11,5 @@ export * from "./Directory";
 export * from "./File";
 export * from "./Scrollable";
 export * from "./Editor";
+export * from "./QRCode";
 
