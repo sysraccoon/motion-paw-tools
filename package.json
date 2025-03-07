@@ -62,6 +62,7 @@
   "dependencies": {
     "@fig/lezer-bash": "^1.2.5",
     "@hhenrichsen/canvas-commons": "^0.10.2",
-    "@lezer/javascript": "^1.4.19"
+    "@lezer/javascript": "^1.4.19",
+    "qrcode": "^1.5.4"
   }
 }
