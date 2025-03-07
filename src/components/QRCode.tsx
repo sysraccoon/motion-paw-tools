@@ -1,6 +1,6 @@
 import { colorSignal, Img, ImgProps, initial, signal } from "@motion-canvas/2d";
 import { ColorSignal, createComputedAsync, PossibleColor, SignalValue, SimpleSignal } from "@motion-canvas/core";
-import { colors } from "@sysraccoon/motion-paw-tools";
+import { colors } from "../colorscheme";
 import { QRCodeErrorCorrectionLevel, QRCodeToDataURLOptions, toDataURL } from "qrcode";
 
 export interface QRCodeProps extends ImgProps {

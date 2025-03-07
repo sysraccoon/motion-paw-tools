@@ -1,6 +1,9 @@
 import { Icon, initial, Layout, LayoutProps, Rect, signal, Txt } from "@motion-canvas/2d";
 import { PossibleVector2, SignalValue, SimpleSignal, Vector2, Vector2Signal } from "@motion-canvas/core";
-import { colors, icons, Scrollable, TabHeader } from "@sysraccoon/motion-paw-tools";
+import { colors } from "../colorscheme";
+import { icons } from "../icons";
+import { Scrollable } from "./Scrollable";
+import { TabHeader } from "./TabHeader";
 
 export interface BrowserProps extends LayoutProps {
   title?: SignalValue<string>;
